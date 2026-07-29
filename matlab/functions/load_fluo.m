@@ -1,8 +1,15 @@
-function [fluo_385_total,fluo_405_total,lambda] = load_fluo(path,wl_min,wl_max)
+function [fluo_385_total,fluo_405_total,lambda,fluo385_all,fluo405_all] = load_fluo(path,wl_min,wl_max)
+%LOAD_FLUO Loads fluorescence data from a *fluo.mat file.
+%   [f385,f405,lambda] = load_fluo(path,wl_min,wl_max) returns the mean
+%   spectrum (across acquisitions) for each laser, background-subtracted
+%   and normalized by power*acquisition time.
+%   [...,fluo385_all,fluo405_all] additionally returns every individual
+%   acquisition (rows), useful to inspect acquisition-to-acquisition
+%   variability (see explore_single_measurement.m).
     fluo=load(path);
-    if isfield(fluo,'lambda') 
+    if isfield(fluo,'lambda')
     lambda=fluo.lambda;
-    else 
+    else
     lambda=fluo.raw_lambda;
     end
     idx_min=find(min((lambda-wl_min).^2)==(lambda-wl_min).^2);
@@ -17,6 +24,8 @@ function [fluo_385_total,fluo_405_total,lambda] = load_fluo(path,wl_min,wl_max)
     time_acq=fluo.donnees_acq_brut.data(1,8)/1000;
     fluo385=(fluo.signal_brut(idx385,:)-fluo.signal_brut(idx385-1,:))/(Power385*time_acq);
     fluo405=(fluo.signal_brut(idx405,:)-fluo.signal_brut(idx405-1,:))/(Power405*time_acq);
-    fluo_385_total=mean(fluo385(:,idx_min:idx_max),1);
-    fluo_405_total=mean(fluo405(:,idx_min:idx_max),1);
+    fluo385_all=fluo385(:,idx_min:idx_max);
+    fluo405_all=fluo405(:,idx_min:idx_max);
+    fluo_385_total=mean(fluo385_all,1);
+    fluo_405_total=mean(fluo405_all,1);
 end

@@ -165,13 +165,13 @@ p = plot(lambda, NADH385total/max(NADH385total), ...
          lambda, fluorophore.PpIX_636_385/max(fluorophore.PpIX_636_385), ...
          lambda, fluorophore.PpIX_620_385/max(fluorophore.PpIX_620_385));
 
-% Ensuite appliquer les couleurs :
-p(1).Color = [0.9290 0.6940 0.1250];  % Jaune
-p(2).Color = [0.4940 0.1840 0.5560];  % Violet
-p(3).Color = [0.4660 0.6740 0.1880];  % Vert
-p(4).Color = [0.3010 0.7450 0.9330];  % Bleu clair
-p(5).Color = [0.6350 0.0780 0.1840];  % Rouge foncé
-p(6).Color = [0 0.4470 0.7410];       % Bleu
+% Then apply the colors:
+p(1).Color = [0.9290 0.6940 0.1250];  % Yellow
+p(2).Color = [0.4940 0.1840 0.5560];  % Purple
+p(3).Color = [0.4660 0.6740 0.1880];  % Green
+p(4).Color = [0.3010 0.7450 0.9330];  % Light blue
+p(5).Color = [0.6350 0.0780 0.1840];  % Dark red
+p(6).Color = [0 0.4470 0.7410];       % Blue
 
 xlim([480,645])
 p(1).LineWidth=6;

@@ -45,8 +45,8 @@ HbO2=data_blood(:,2);
 Hb=data_blood(:,3);
 
 % Definition of blood constants useful later
-CHb=150 ; %150 g/L théorique 
-MHb=64500; % masse molaire de l'hémoglobine en g/mol
+CHb=150 ; %150 g/L theoretical
+MHb=64500; % molar mass of hemoglobin in g/mol
 ua_Hb=2.303*Hb/MHb;
 ua_HbO2=2.303*HbO2/MHb;
 % Definition of the laser excitation wavelengths 

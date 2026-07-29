@@ -1,10 +1,10 @@
-function [SsourceShort,SsourceLong]=calibration_spectralon(file_spectralon_exp,file_spectralon_theo)
-SpectralonExp=load(file_spectralon_exp);
+function [SsourceShort,SsourceLong]=calibration_spectralon_from_data(file_wl,file_spectralon_theo)
+SpectralonExp=load(file_wl);
 WLallummee=SpectralonExp.donnees_acq_brut.data(:,4:6);
 idxLong=find(WLallummee(:,2)==1);
 idxShort=find(WLallummee(:,1)==1);
-SpecexpShort=SpectralonExp.signal_brut(idxShort,:)-SpectralonExp.signal_brut(idxShort-1,:);
-SpecexpLong=SpectralonExp.signal_brut(idxLong,:)-SpectralonExp.signal_brut(idxLong-1,:);
+SpecexpShort=SpectralonExp.spectralon(idxShort,:)-SpectralonExp.spectralon(idxShort-1,:);
+SpecexpLong=SpectralonExp.spectralon(idxLong,:)-SpectralonExp.spectralon(idxLong-1,:);
 %theoretical values of the spectralon
 spectralon=importdata(file_spectralon_theo);
 spectralon=spectralon.data;
