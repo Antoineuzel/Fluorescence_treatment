@@ -116,3 +116,46 @@ def extract_components(res_params, fluorophores, lambda_wl, ref_spectra=None):
         'PpIX_636': fluo_exp_385(p_PpIX636, fluorophores, lambda_wl, ref_spectra),
         'PpIX_620': fluo_exp_385(p_PpIX620, fluorophores, lambda_wl, ref_spectra),
     }
+
+
+# Maps the short fluorophore names to the field-name fragments used in the
+# `fluorophore` dict returned by functions.corrected_fluo.corrected_fluo_ls_wl_1
+# (e.g. result['fluorophore']['flavine_385_exp']) -- same mapping as used
+# inline in python/gui/main_window.py::_update_fit_tab.
+FLUOROPHORE_NAME_MAP = {
+    'FAD': 'flavine', 'NADH': 'NADH', 'FMN': 'gaussian',
+    'Lipo': 'lipo', 'PpIX_636': 'PpIX_636', 'PpIX_620': 'PpIX_620',
+}
+
+
+def compute_fractions(fluorophore, lam, suffix):
+    """
+    Computes each active fluorophore's share of the total fluorescence, as a
+    percentage, from a fit result's `fluorophore` dict (as returned by
+    corrected_fluo_ls_wl_1). Mirrors the histogram computation in
+    python/gui/main_window.py::_update_fit_tab.
+
+    Parameters
+    ----------
+    fluorophore : dict
+        `result['fluorophore']` from corrected_fluo_ls_wl_1.
+    lam : ndarray
+        Wavelength vector matching the component arrays.
+    suffix : str
+        '_385_exp' or '_405_exp', selects which excitation laser to read.
+
+    Returns
+    -------
+    dict {name: percent} for every fluorophore whose component is present and
+    non-zero (disabled fluorophores are simply absent from the result).
+    """
+    integrals = {}
+    for name, mat_name in FLUOROPHORE_NAME_MAP.items():
+        comp = fluorophore.get(mat_name + suffix)
+        if comp is not None and np.any(comp != 0):
+            integrals[name] = max(float(np.trapz(comp, lam)), 0.0)
+
+    total = sum(integrals.values())
+    if total <= 0:
+        return {name: 0.0 for name in integrals}
+    return {name: value / total * 100.0 for name, value in integrals.items()}

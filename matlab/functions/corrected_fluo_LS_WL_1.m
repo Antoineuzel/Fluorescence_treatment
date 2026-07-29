@@ -72,7 +72,6 @@ ub = [100,4,1,70,1,100];
     [S385total,S405total,lambda]=load_fluo(fullfile(path,file),min_wl_fluo,max_wl_fluo);
 %     R_short_extracted=reflectance_Kim(x_short,rho_short,ua,WLight.lambda,n_medium,n_short,min_wl_fluo,max_wl_fluo);
     R_short_extracted=R_Short;
-    R_short_extracted=1;
     lb = [0,0,0,0,0,0,0];
     ub = [1,1000,1000,1000,1000,1000,1000];
     
